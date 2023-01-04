@@ -8,7 +8,7 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is None:
             return FileStorage.__objects
@@ -30,7 +30,7 @@ class FileStorage:
             json.dump(temp, f)
 
     def delete(self, obj=None):
-        """Deletes an object from the dictionary"""
+        """ Deletes an object from the dictionary """
         if not obj:
             return
 
@@ -62,5 +62,5 @@ class FileStorage:
             pass
 
     def close(self):
-        """Close fro JSON"""
+        """Close for JSON"""
         self.reload()
