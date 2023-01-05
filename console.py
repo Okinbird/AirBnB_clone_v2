@@ -39,7 +39,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -76,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline[0] == '{' and pline[-1] == '}'\
-                            and type(eval(pline)) == dict:
+                            and type(eval(pline)) is dict:
                         _args = pline
                     else:
                         _args = pline.replace(',', '')
@@ -123,15 +122,15 @@ class HBNBCommand(cmd.Cmd):
                 vals_toa_add = arg.split('=', 1)
                 key = vals_toa_add[0]
                 value = vals_toa_add[1]
-                if value[0] == value[-1] == '=':
+                if value[0] == value[-1] == '"':
                     value = value.replace('"', '').replace('_', ' ')
                 else:
                     try:
                         value = int(value)
-                    except ValueError:
+                    except:
                         try:
                             value = float(value)
-                        except ValueError:
+                        except:
                             continue
                 dic[key] = value
         return (dic)
@@ -212,7 +211,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -224,21 +223,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        args = shlex.split(args)
+        ob_list = []
+        if len(args) == 0:
+            ob_dic = models.storage.all()
+        elif args[0] in self.classes:
+            ob_dic = models.storage.all(self.classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            print("** class doesn't exist **")
+            return
+        for key in ob_dic:
+                ob_list.append(str(ob_dic[key]))
 
-        print(print_list)
+        print("[", end="")
+        print(", ".join(ob_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
