@@ -127,10 +127,10 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     try:
                         value = int(value)
-                    except:
+                    except ValueError:
                         try:
                             value = float(value)
-                        except:
+                        except ValueError:
                             continue
                 dic[key] = value
         return (dic)
@@ -211,7 +211,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -233,7 +233,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         for key in ob_dic:
-                ob_list.append(str(ob_dic[key]))
+            ob_list.append(str(ob_dic[key]))
 
         print("[", end="")
         print(", ".join(ob_list), end="")
