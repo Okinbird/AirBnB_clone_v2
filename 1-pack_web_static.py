@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    Fabric script that generates a .tgz 
+    Fabric script that generates a .tgz
     archive from the contents of web_static.
 """
 import os.path
@@ -22,4 +22,4 @@ def do_pack():
             return None
     if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
-    return 
+    return
